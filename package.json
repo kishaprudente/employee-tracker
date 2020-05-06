@@ -2,9 +2,10 @@
   "name": "employee-tracker",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "tracker.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose",
+    "watch": "nodemon tracker.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,8 @@
     "console.table": "^0.10.0",
     "inquirer": "^7.1.0",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "jest": "^26.0.0"
   }
 }

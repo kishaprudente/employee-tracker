@@ -1,8 +1,11 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const DbHelpers = require("./util/DbHelpers");
+const PromptHelpers = require("./util/PromptHelpers");
 
 const dbHelpers = new DbHelpers();
+const promptHelpers = new PromptHelpers();
+
 const connection = mysql.createConnection({
   host: "localhost",
 
@@ -25,18 +28,7 @@ connection.connect(async (err) => {
 
 async function start() {
   try {
-    const ask = await inquirer.prompt({
-      type: "list",
-      message: "What would you like to do?",
-      name: "userChoice",
-      choices: [
-        "View all Employees",
-        "View all Employees by Department",
-        "View all employees by Manager",
-        "Add Employee",
-      ],
-    });
-    const { userChoice } = ask;
+    const userChoice = await promptHelpers.startTodo();
     switch (userChoice) {
       case "View all Employees":
         dbHelpers.viewAll(connection);

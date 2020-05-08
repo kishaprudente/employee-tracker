@@ -15,11 +15,8 @@ CREATE TABLE roles(
     title VARCHAR(30),
     salary DECIMAL(10,2),
     department_id INT,
-    CONSTRAINT tracker_id
     FOREIGN KEY (department_id)
-        REFERENCES departments(id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
+    REFERENCES departments(id)
 );
 
 CREATE TABLE employees(
@@ -27,16 +24,9 @@ CREATE TABLE employees(
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     role_id INT,
-    manager_id INT,
-    CONSTRAINT employee_ibfk_1
+    manager_id INT NULL,
     FOREIGN KEY (role_id)
-        REFERENCES roles(id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-	FOREIGN KEY (manager_id)
-        REFERENCES employees(id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
+    REFERENCES roles(id)
 );
 
 DROP TABLE employees;
@@ -46,7 +36,7 @@ VALUES ("Engineering"), ("Finance"), ("Sales"), ("Legal");
 
 SELECT * FROM departments;
 
-INSERT INTO roles(title, salary,department_id)
+INSERT INTO roles(title, salary, department_id)
 VALUES ("Software Engineer", 130000, 1),
 ("Lead Engineer", 175000, 1),
 ("Accountant", 85000, 2),
@@ -56,3 +46,22 @@ VALUES ("Software Engineer", 130000, 1),
 ("Legal Team Lead", "175000", 4);
 
 SELECT * FROM roles;
+
+INSERT INTO employees(first_name, last_name, role_id, manager_id)
+VALUES
+("John", "Doe", 4, 3),
+("Mike", "Chan", 5, 1),
+("Ashley", "Rodriguez", 2, null),
+("Kevin", "Tupik", 1, 3),
+("Malia", "Brown", 3, null);
+
+SELECT * FROM employees;
+
+SELECT roles.title, roles.salary, departments.name
+FROM departments JOIN roles ON roles.department_id = departments.id;
+
+SELECT employees.id, employees.first_name, employees.last_name, roles.title,
+departments.name, roles.salary, employees.manager_id
+FROM departments
+INNER JOIN roles ON roles.department_id = departments.id
+INNER JOIN employees ON employees.role_id = roles.id;

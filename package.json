@@ -5,7 +5,8 @@
   "main": "tracker.js",
   "scripts": {
     "test": "jest --verbose",
-    "watch": "nodemon tracker.js"
+    "watch": "nodemon tracker.js",
+    "start": "node tracker.js"
   },
   "repository": {
     "type": "git",

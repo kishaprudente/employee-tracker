@@ -1,10 +1,8 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const DbHelpers = require("./util/DbHelpers");
-const PromptHelpers = require("./util/PromptHelpers");
 
 const dbHelpers = new DbHelpers();
-const promptHelpers = new PromptHelpers();
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -28,25 +26,42 @@ connection.connect(async (err) => {
 
 async function start() {
   try {
-    const userChoice = await promptHelpers.startTodo();
+    const todo = await inquirer.prompt({
+      type: "list",
+      message: "What would you like to do?",
+      name: "userChoice",
+      choices: [
+        "View all Employees",
+        "View all Employees by Department",
+        "Add Employee",
+        "Add Role",
+        "Add Department",
+      ],
+    });
+    const { userChoice } = todo;
     switch (userChoice) {
       case "View all Employees":
-        dbHelpers.viewAll(connection);
-        // start();
+        await dbHelpers.viewAll(connection);
+        await start();
         break;
       case "View all Employees by Department":
-        // viewByDept();
-        break;
-      case "View all Employees by Manager":
-        // viewByManager();
+        await dbHelpers.viewByDept(connection);
+        await start();
         break;
       case "Add Employee":
-        // dbHelpers.addEmployee(connection);
-        // viewByManager();
+        await dbHelpers.addEmployee(connection);
+        await start();
+        break;
+      case "Add Role":
+        // addRole(connection);
+        break;
+      case "Add Dept":
+        // addDept(connection);
         break;
       default:
         break;
     }
+    return userChoice;
   } catch (err) {
     throw err;
   }
